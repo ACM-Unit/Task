@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/"
+                     debug="false">
+
+    <appender name="taskManagerLogFile" class="org.apache.log4j.RollingFileAppender">
+        <param name="file" value="/logs/taskManager.log"/>
+        <param name="MaxFileSize" value="256KB"/>
+        <param name="MaxBackupIndex" value="4"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="task manager >>> %d{dd MMM yyyy HH:mm:ss,SSS} %-5p [%t] (%c{1}) %m%n"/>
+        </layout>
+    </appender>
+    <category name="com.onddy">
+        <level value="INFO"/>
+        <appender-ref ref="taskManagerLogFile"/>
+    </category>
+   <!-- <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="star-hills.de >>> %d{dd MMM yyyy HH:mm:ss,SSS} %-5p [%t] (%c{1}) %m%n"/>
+        </layout>
+    </appender>-->
+
+    <!--<appender name="ASYNC" class="org.apache.log4j.AsyncAppender">
+        <param name="BufferSize" value="256"/>
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="starhillsLogFile"/>
+    </appender>-->
+
+   <!-- <root>
+        <priority value="debug"/>
+        <appender-ref ref="starhillsLogFile"/>
+        <appender-ref ref="ASYNC"/>
+    </root>-->
+
+</log4j:configuration>
