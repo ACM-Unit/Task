@@ -2,44 +2,22 @@ package view;
 
 import controller.AddEventListener;
 import controller.IntervalEventListener;
-import main.Main;
+import controller.RedirectEventListener;
 import model.Task;
-import org.apache.log4j.Logger;
 import util.DateTimePicker;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 29.11.2016.
+ * Created by Admin on 06.12.2016.
  */
-public class AddFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger(AddFrame.class);
-    public AddFrame(Task task){
-        super("Task");
-        this.setBounds(300,180,345,310);
-        ImageIcon imageIcon = new ImageIcon("Logo.png");
-        this.setIconImage(imageIcon.getImage());
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.setResizable(false);
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                JFrame frame = (JFrame)e.getSource();
-                frame.setVisible(false);
-                frame.dispose();
-                Main.frame.setVisible(true);
-                Main.frame.setEnabled(true);
-                }
-        });
-        Container container = this.getContentPane();
-        container.setSize(345,310);
-        container.setLayout(null);
+public class AddPanel extends JPanel {
+    public AddPanel(Task task){
+        this.setSize(345,310);
+        this.setLayout(null);
         DateTimePicker start = new DateTimePicker();
         start.setFormats( DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.MEDIUM ) );
         start.setTimeFormat( DateFormat.getTimeInstance( DateFormat.MEDIUM ) );
@@ -52,7 +30,7 @@ public class AddFrame extends JFrame {
         JLabel headlabel=new JLabel();
         headlabel.setSize(200, 20);
         headlabel.setLocation(150,5);
-        container.add(headlabel);
+        this.add(headlabel);
         JTextField title=new JTextField(task.getTitle());
         JTextField interval=new JTextField("");
         JCheckBox active=new JCheckBox("Активировать", task.isActive());
@@ -64,7 +42,7 @@ public class AddFrame extends JFrame {
         JLabel intervalLabel=new JLabel("Интервал");
         chekInterval.setSize(200,30);
         chekInterval.setLocation(120, 5);
-        container.add(chekInterval);
+        this.add(chekInterval);
         Map<JLabel, JComponent> addMap=new LinkedHashMap<>();
         addMap.put(titleLabel, title);
         addMap.put(startLabel, start);
@@ -75,12 +53,16 @@ public class AddFrame extends JFrame {
         int i=40;
         for(Map.Entry<JLabel, JComponent> entry:addMap.entrySet()){
             entry.getKey().setSize(100,30);
-            entry.getKey().setLocation(10, i);
             entry.getValue().setSize(200,30);
+            entry.getKey().setLocation(10, i);
             entry.getValue().setLocation(120, i);
-            container.add(entry.getKey());
-            container.add(entry.getValue());
-            i+=32;
+            this.add(entry.getKey());
+            this.add(entry.getValue());
+            if(i==104) {
+                i += 1;
+            }else{
+                i += 32;
+            }
         }
         if(task.isRepeated()) {
             start.setDate(task.getDateStart());
@@ -122,8 +104,8 @@ public class AddFrame extends JFrame {
         addButton.setSize(150, 30);
         addButton.setLocation(170, 232);
         addButton.addActionListener(new AddEventListener(addMap, chekInterval, task));
-        container.add(backButton);
-        container.add(addButton);
+        backButton.addActionListener(new RedirectEventListener("Main", null));
+        this.add(backButton);
+        this.add(addButton);
     }
-
 }

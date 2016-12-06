@@ -15,24 +15,24 @@
         <level value="INFO"/>
         <appender-ref ref="taskManagerLogFile"/>
     </category>
-   <!-- <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+   <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern"
-                   value="star-hills.de >>> %d{dd MMM yyyy HH:mm:ss,SSS} %-5p [%t] (%c{1}) %m%n"/>
+                   value="task manager  >>> %d{dd MMM yyyy HH:mm:ss,SSS} %-5p [%t] (%c{1}) %m%n"/>
         </layout>
-    </appender>-->
+    </appender>
 
-    <!--<appender name="ASYNC" class="org.apache.log4j.AsyncAppender">
+    <appender name="ASYNC" class="org.apache.log4j.AsyncAppender">
         <param name="BufferSize" value="256"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="starhillsLogFile"/>
-    </appender>-->
+        <appender-ref ref="taskManagerLogFile"/>
+    </appender>
 
-   <!-- <root>
+   <root>
         <priority value="debug"/>
-        <appender-ref ref="starhillsLogFile"/>
+        <appender-ref ref="taskManagerLogFile"/>
         <appender-ref ref="ASYNC"/>
-    </root>-->
+    </root>
 
 </log4j:configuration>

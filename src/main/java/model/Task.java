@@ -93,7 +93,9 @@ public class Task implements Serializable, Cloneable {
     public int getTime() {
         return (int)time.getTime();
     }
-
+    public Date getDateTime(){return time;}
+    public Date getDateStart(){return start;}
+    public Date getDateEnd(){return end;}
     public void setTime(int time){
             this.time = new Date(time*1000);
             start.setTime(0);
