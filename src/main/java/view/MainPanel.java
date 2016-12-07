@@ -7,6 +7,7 @@ import model.Tasks;
 import org.apache.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.border.EtchedBorder;
 import java.awt.*;
 import java.util.*;
 
@@ -15,7 +16,7 @@ import java.util.*;
  */
 public class MainPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(MainPanel.class);
-    public MainPanel(){
+    public MainPanel(MainFrame frame){
         JLabel headlabel = new JLabel("Задачи на ближайшие сутки");
         JButton addbutton = new JButton();
         JButton printbutton = new JButton();
@@ -25,7 +26,7 @@ public class MainPanel extends JPanel {
         panel.add( label, BorderLayout.CENTER );
         panel.setSize(414, 70);
         panel.setLocation(10, 10);
-        this.setSize(650,350);
+        this.setSize(660,360);
         this.setLayout(null);
         this.add(headlabel);
         this.add(addbutton);
@@ -33,7 +34,7 @@ public class MainPanel extends JPanel {
         this.add(panel);
         this.setVisible(true);
         headlabel.setSize(250,25);
-        headlabel.setLocation(50, 80);
+        headlabel.setLocation(50, 90);
         addbutton.setSize(30,30);
         addbutton.setLocation(this.getWidth()-75, 5);
         addbutton.setIcon(new ImageIcon("add.png"));
@@ -49,11 +50,35 @@ public class MainPanel extends JPanel {
         LOGGER.info(nowDate+"--------"+endDate);
         SortedMap<Date, Set<Task>> calendar= Tasks.calendar(Main.tasks, nowDate, endDate);
         Iterator iter=calendar.entrySet().iterator();
-        int i=20;
+        JPanel head=new JPanel();
+        head.setLayout(null);
+        head.setLocation(5,110);
+        head.setSize(this.getWidth()-15,210);
+        head.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+        if(calendar.size()>3){
+            head.setSize(this.getWidth()-15,440);
+            frame.setBounds(300,180,660,560);
+            this.setSize(660,560);
+            if(calendar.size()>6){
+                JScrollPane pane = new JScrollPane();
+                head.add(pane);
+            }
+        }
+        int x=20;
+        int y=5;
+        int n=1;
         while(iter.hasNext()) {
             Map.Entry<Date, Set<Task>> cal = (Map.Entry<Date, Set<Task>>)iter.next();
-            this.add(new CalendarPanel(cal, i));
-            i+=205;
+            head.add(new CalendarPanel(cal, x, y));
+            if(n%3==0){
+                x=20;
+                y+=205;
+            }else {
+                x += 205;
+            }
+            n++;
         }
+        this.add(head);
     }
+
 }

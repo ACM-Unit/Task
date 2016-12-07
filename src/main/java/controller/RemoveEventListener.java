@@ -33,7 +33,7 @@ public class RemoveEventListener implements ActionListener {
             Main.frame.repaint();
             JPanel newpanel=null;
             if(panel.equals("Main")){
-                newpanel=new MainPanel();
+                newpanel=new MainPanel(Main.frame);
             }else if(panel.equals("All")){
                 newpanel=new AllTaskPanel();
             }

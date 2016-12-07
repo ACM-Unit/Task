@@ -31,7 +31,7 @@ public class RedirectEventListener implements ActionListener {
         if(panel.equals("Add")){
             newpanel=new AddPanel(task);
         }else if(panel.equals("Main")){
-            newpanel=new MainPanel();
+            newpanel=new MainPanel(Main.frame);
         }else if(panel.equals("All")){
             newpanel=new AllTaskPanel();
         }

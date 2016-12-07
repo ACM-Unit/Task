@@ -14,11 +14,11 @@ private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
     private Font font;
     public MainFrame(){
         super("Task manager");
-        this.setBounds(300,180,650,350);
+        this.setBounds(300,180,660,360);
         this.setResizable(false);
         ImageIcon imageIcon = new ImageIcon("Logo.png");
         this.setIconImage(imageIcon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setContentPane(new MainPanel());
+        this.setContentPane(new MainPanel(this));
     }
 }

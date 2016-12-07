@@ -24,12 +24,12 @@ public class CalendarPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(CalendarPanel.class);
     private Map.Entry<Date, Set<Task>> cal;
     private int x;
+    private int y;
     private Font font;
-    public CalendarPanel(Map.Entry<Date, Set<Task>> cal, int x){
+    public CalendarPanel(Map.Entry<Date, Set<Task>> cal, int x, int y){
         InputStream myStream = null;
         try {
-            myStream = new BufferedInputStream(
-                    new FileInputStream("electronik.ttf"));
+            myStream = new BufferedInputStream(new FileInputStream("electronik.ttf"));
             Font ttfBase = Font.createFont(Font.TRUETYPE_FONT, myStream);
             font = ttfBase.deriveFont(Font.PLAIN, 34);
         } catch (Exception ex) {
@@ -40,7 +40,7 @@ public class CalendarPanel extends JPanel {
         DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
         this.setLayout(null);
-        this.setLocation(x,100);
+        this.setLocation(x,y);
         this.setSize(200,200);
         this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
         JLabel datelabel=new JLabel(dateFormat.format(date));
