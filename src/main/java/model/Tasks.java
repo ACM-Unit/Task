@@ -18,7 +18,14 @@ public class Tasks {
      * @return collection of tasks
      */
     public static Iterable<Task> incoming(Iterable<Task> tasks, Date from, Date to) {
-        TaskList incomingList =new ArrayTaskList();
+        TaskList incomingList = null;
+        try {
+            incomingList = (TaskList)tasks.getClass().newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
         Iterator iter=tasks.iterator();
         while(iter.hasNext()) {
             Task task=(Task)iter.next();
@@ -67,9 +74,7 @@ public class Tasks {
                         taskSet.add(task);
                         calendar1.put((Date) date.clone(), taskSet);
                     }
-
                 }
-
             } else if(!task.isRepeated() && task.getDateTime().after(start) && task.getDateTime().before(end)){
                 Set<Task> taskSet = new HashSet<Task>();
                 if (calendar1.containsKey(task.getDateTime())) {
@@ -78,8 +83,8 @@ public class Tasks {
                 taskSet.add(task);
                 calendar1.put((Date) task.getDateTime().clone(), taskSet);
             }
-          }
-            return calendar1;
         }
+        return calendar1;
+    }
 
 }

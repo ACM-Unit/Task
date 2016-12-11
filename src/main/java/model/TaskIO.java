@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * Created by Admin on 19.09.2016.
  */
 public class TaskIO {
-    public static void write(TaskList tasks, OutputStream out){
+    public static void write(TaskList tasks, OutputStream out) throws IOException{
         try (ObjectOutputStream dos = new ObjectOutputStream(out)){
             dos.writeInt(tasks.size());
             for(Task task:tasks) {
@@ -24,28 +24,28 @@ public class TaskIO {
             System.out.println("error writing object");
         }
     }
-    public static void read(TaskList tasks, InputStream in){
+    public static void read(TaskList tasks, InputStream in)  throws IOException {
         try(ObjectInputStream dos = new ObjectInputStream(in)) {
             inStream(tasks, dos);
         } catch (IOException e) {
-            System.out.println("error reading object");
+            throw new IOException("error reading object");
         }
     }
-    public static void writeBinary(TaskList tasks, File file) throws FileNotFoundException {
+    public static void writeBinary(TaskList tasks, File file) throws IOException {
         try (ObjectOutputStream dos = new ObjectOutputStream(new FileOutputStream(file))) {
             dos.writeInt(tasks.size());
             for(Task task:tasks) {
                 dos.writeObject(task);
             }
         } catch (IOException e) {
-            System.out.println("error writing object");
+            throw new IOException("error writing object");
         }
     }
-    public static void readBinary(TaskList tasks, File file) throws FileNotFoundException {
+    public static void readBinary(TaskList tasks, File file) throws IOException {
         try(ObjectInputStream dos = new ObjectInputStream(new FileInputStream(file))) {
             inStream(tasks, dos);
         } catch (IOException e) {
-            System.out.println("error reading object");
+            throw new IOException("error reading object");
         }
     }
     private static void inStream(TaskList tasks, ObjectInputStream dos) throws IOException {

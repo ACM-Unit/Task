@@ -4,81 +4,72 @@ import main.Main;
 import model.Task;
 import model.TaskIO;
 import org.apache.log4j.Logger;
-import util.DateTimePicker;
+import view.AddPanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.IOException;
+
+import static main.Main.PRINTTASKFILE;
+import static main.Main.TASKFILE;
 
 /**
- * Created by Admin on 29.11.2016.
+ * Listener class which runs when user saves added task, him implements ActionListener and one him method
  */
 public class AddEventListener implements ActionListener {
     private static final Logger LOGGER=Logger.getLogger(AddEventListener.class);
     private Task removedtask;
-    private JTextField title;
-    private DateTimePicker start;
-    private DateTimePicker end;
-    private DateTimePicker time;
-    private JTextField interval;
-    private JCheckBox active;
-    private JCheckBox checkRepeat;
-    private JLabel titleLabel;
-    private JLabel startLabel;
-    private JLabel endLabel;
-    private JLabel timeLabel;
-    private JLabel intervalLabel;
-    private JLabel activeLabel;
-    public AddEventListener(Map<JLabel, JComponent> map, JCheckBox checkRepeat, Task task){
+    public AddEventListener(Task task){
         removedtask=task;
-        this.checkRepeat=checkRepeat;
-        Iterator<Map.Entry<JLabel, JComponent>> iter=map.entrySet().iterator();
-        int i=0;
-        while(iter.hasNext()){
-            Map.Entry<JLabel, JComponent> entry=iter.next();
-            if(i==0){
-                this.title=(JTextField)entry.getValue();
-                this.titleLabel=entry.getKey();
-            }else if(i==1){
-                this.start=(DateTimePicker)entry.getValue();
-                this.startLabel=entry.getKey();
-            }else if(i==2){
-                this.end=(DateTimePicker)entry.getValue();
-                this.endLabel=entry.getKey();
-            }else if(i==3){
-                this.time=(DateTimePicker)entry.getValue();
-                this.timeLabel=entry.getKey();
-            }else if(i==4){
-                this.interval=(JTextField)entry.getValue();
-                this.intervalLabel=entry.getKey();
-            }else if(i==5){
-                this.active=(JCheckBox)entry.getValue();
-            }
-            i++;
-        }
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
+        Component source = (Component)e.getSource();
+        AddPanel panel = (AddPanel)source.getParent();
         Task task;
-        if(checkRepeat.isSelected()){
-            if(title.getText()==null || start.getDate()==null || end.getDate()==null || interval.getText()==null){
+        int inter =0;
+        try {
+            inter = Integer.parseInt(panel.getInterval().getDays().getText()) * 24 * 60 * 60 + Integer.parseInt(panel.getInterval().getHours().getText()) * 60 * 60 + Integer.parseInt(panel.getInterval().getMinutes().getText()) * 60;
+        }catch(NumberFormatException e1){
+            JOptionPane.showMessageDialog(null, "Неправильно заполнен интервал. В поля интервала можно вводить только цифры");
+            return;
+        }
+        if(panel.getChekRepeat().isSelected()){
+            if(panel.getTitle().getText()==null || panel.getStart().getDate()==null || panel.getEnd().getDate()==null) {
                 JOptionPane.showMessageDialog(null, "Заполните все поля");
                 return;
+            }else if(inter==0 || panel.getStart().getDate().equals(panel.getEnd().getDate())){
+                int selectedOption = JOptionPane.showConfirmDialog(null,
+                        "Задача будет не повторяемой?",
+                        "Подтвердите действие",
+                        JOptionPane.YES_NO_OPTION);
+                if (selectedOption == JOptionPane.YES_OPTION) {
+                    task = new Task(panel.getTitle().getText(), panel.getStart().getDate());
+                    task.setActive(panel.getActive().isSelected());
+                }else{
+                    return;
+                }
             }else {
-                task = new Task(title.getText(), start.getDate(), end.getDate(), Integer.parseInt(interval.getText()));
-                task.setActive(active.isSelected());
+                try {
+                    task = new Task(panel.getTitle().getText(), panel.getStart().getDate(), panel.getEnd().getDate(), inter);
+                    task.setActive(panel.getActive().isSelected());
+                }catch(IllegalArgumentException e1){
+                    JOptionPane.showMessageDialog(null, "Время конца должно быть после времени начала");
+                    return;
+                }
+
             }
         }else{
-            if(title.getText()==null || time.getDate()==null){
+            if(panel.getTitle().getText()==null || panel.getTime().getDate()==null){
                 JOptionPane.showMessageDialog(null, "Заполните все поля");
                 return;
             }else {
-                task = new Task(title.getText(), time.getDate());
-                task.setActive(active.isSelected());
+                task = new Task(panel.getTitle().getText(), panel.getTime().getDate());
+                task.setActive(panel.getActive().isSelected());
             }
         }
         int selectedOption = JOptionPane.showConfirmDialog(null,
@@ -90,14 +81,16 @@ public class AddEventListener implements ActionListener {
             removedtask=task;
             Main.tasks.add(task);
             try {
-                TaskIO.writeBinary(Main.tasks, new File("2.txt"));
-                TaskIO.writeText(Main.tasks, new File("3.txt"));
+                TaskIO.writeBinary(Main.tasks, new File(TASKFILE));
+                TaskIO.writeText(Main.tasks, new File(PRINTTASKFILE));
+                Main.mon=false;
+                synchronized( Main.MONITOR  ) {
+                    Main.MONITOR.notify();
+                }
                 LOGGER.info("New Task was added");
-            } catch (FileNotFoundException e1) {
+            } catch (IOException e1) {
                 LOGGER.error(e1);
             }
-        }else{
-                //break;
         }
 
     }

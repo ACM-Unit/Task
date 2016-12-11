@@ -11,10 +11,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
- * Created by Admin on 29.11.2016.
+ * Listener class which runs when user wants remove task, him implements ActionListener and one him method
  */
 public class RemoveEventListener implements ActionListener {
     private static final Logger LOGGER=Logger.getLogger(RemoveEventListener.class);
@@ -39,8 +39,12 @@ public class RemoveEventListener implements ActionListener {
             }
             Main.frame.setContentPane(newpanel);
             Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());
+            Main.mon=false;
+            synchronized( Main.MONITOR  ) {
+                Main.MONITOR.notify();
+            }
             LOGGER.info("Task with name "+task.getTitle()+" was removed");
-        } catch (FileNotFoundException e1) {
+        } catch (IOException e1) {
             LOGGER.error(e1);
         }
     }

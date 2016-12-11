@@ -60,9 +60,6 @@ public class Task implements Serializable, Cloneable {
      */
     public Task(String title, Date start, Date end, int interval) throws IllegalArgumentException {
         if(end.compareTo(start)<0 || interval<0){
-            //System.out.println("1 " + end);
-            //System.out.println("2 " +interval);
-            //System.out.println("3 " +start);
             throw new IllegalArgumentException();
         }else{
             this.title = title;

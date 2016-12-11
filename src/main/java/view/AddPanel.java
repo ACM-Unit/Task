@@ -1,13 +1,15 @@
 package view;
 
 import controller.AddEventListener;
-import controller.IntervalEventListener;
+import controller.RepeatEventListener;
 import controller.RedirectEventListener;
 import model.Task;
+import org.apache.log4j.Logger;
 import util.DateTimePicker;
 
 import javax.swing.*;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -15,34 +17,48 @@ import java.util.Map;
  * Created by Admin on 06.12.2016.
  */
 public class AddPanel extends JPanel {
-    public AddPanel(Task task){
-        this.setSize(345,310);
+    private static final Logger LOGGER=Logger.getLogger(AddPanel.class);
+    private DateTimePicker start = new DateTimePicker();
+    private DateTimePicker end = new DateTimePicker();
+    private DateTimePicker time = new DateTimePicker();
+    private JTextField title;
+    private IntervalPanel interval;
+    private JCheckBox active;
+    private JCheckBox chekRepeat;
+    private JButton backButton = new JButton("назад");
+    private JButton addButton = new JButton("сохранить");
+    private JLabel titleLabel=new JLabel("Название");
+    private JLabel startLabel=new JLabel("Время начала");
+    private JLabel endLabel=new JLabel("Время конца");
+    private JLabel timeLabel=new JLabel("Время");
+    private JLabel intervalLabel=new JLabel("Интервал");
+    public AddPanel(Task task, String back){
+        this.setSize(395,310);
         this.setLayout(null);
-        DateTimePicker start = new DateTimePicker();
         start.setFormats( DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.MEDIUM ) );
         start.setTimeFormat( DateFormat.getTimeInstance( DateFormat.MEDIUM ) );
-        DateTimePicker end = new DateTimePicker();
         end.setFormats( DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.MEDIUM ) );
         end.setTimeFormat( DateFormat.getTimeInstance( DateFormat.MEDIUM ) );
-        DateTimePicker time = new DateTimePicker();
         time.setFormats( DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.MEDIUM ) );
         time.setTimeFormat( DateFormat.getTimeInstance( DateFormat.MEDIUM ) );
-        JLabel headlabel=new JLabel();
-        headlabel.setSize(200, 20);
-        headlabel.setLocation(150,5);
-        this.add(headlabel);
-        JTextField title=new JTextField(task.getTitle());
-        JTextField interval=new JTextField("");
-        JCheckBox active=new JCheckBox("Активировать", task.isActive());
-        JCheckBox chekInterval=new JCheckBox("Цикличная", task.isRepeated());
-        JLabel titleLabel=new JLabel("Название");
-        JLabel startLabel=new JLabel("Время начала");
-        JLabel endLabel=new JLabel("Время конца");
-        JLabel timeLabel=new JLabel("Время");
-        JLabel intervalLabel=new JLabel("Интервал");
-        chekInterval.setSize(200,30);
-        chekInterval.setLocation(120, 5);
-        this.add(chekInterval);
+        title=new JTextField(task.getTitle());
+        if(task.isRepeated()){
+            Calendar cal = Calendar.getInstance();
+            cal.clear();
+            cal.setTimeInMillis(task.getRepeatInterval());
+            int days=cal.get(Calendar.DAY_OF_YEAR)-1;
+            int hours=cal.get(Calendar.HOUR_OF_DAY)-2;
+            int minutes=cal.get(Calendar.MINUTE);
+            LOGGER.info(days+" "+hours+" "+minutes);
+            interval=new IntervalPanel(days, hours, minutes);
+        }else{
+            interval=new IntervalPanel(0, 0, 0);
+        }
+        active=new JCheckBox("Активировать", task.isActive());
+        chekRepeat=new JCheckBox("Цикличная", task.isRepeated());
+        chekRepeat.setSize(200,30);
+        chekRepeat.setLocation(120, 5);
+        this.add(chekRepeat);
         Map<JLabel, JComponent> addMap=new LinkedHashMap<>();
         addMap.put(titleLabel, title);
         addMap.put(startLabel, start);
@@ -53,7 +69,7 @@ public class AddPanel extends JPanel {
         int i=40;
         for(Map.Entry<JLabel, JComponent> entry:addMap.entrySet()){
             entry.getKey().setSize(100,30);
-            entry.getValue().setSize(200,30);
+            entry.getValue().setSize(250,30);
             entry.getKey().setLocation(10, i);
             entry.getValue().setLocation(120, i);
             this.add(entry.getKey());
@@ -64,10 +80,12 @@ public class AddPanel extends JPanel {
                 i += 32;
             }
         }
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.setTimeInMillis(task.getRepeatInterval());
         if(task.isRepeated()) {
             start.setDate(task.getDateStart());
             end.setDate(task.getDateEnd());
-            interval.setText(String.valueOf(task.getRepeatInterval()));
             start.setVisible(true);
             end.setVisible(true);
             interval.setVisible(true);
@@ -96,16 +114,126 @@ public class AddPanel extends JPanel {
             intervalLabel.setVisible(false);
             timeLabel.setVisible(true);
         }
-        chekInterval.addActionListener(new IntervalEventListener(addMap));
-        JButton backButton = new JButton("назад");
+        chekRepeat.addActionListener(new RepeatEventListener());
         backButton.setSize(150, 30);
         backButton.setLocation(10, 232);
-        JButton addButton = new JButton("сохранить");
         addButton.setSize(150, 30);
         addButton.setLocation(170, 232);
-        addButton.addActionListener(new AddEventListener(addMap, chekInterval, task));
-        backButton.addActionListener(new RedirectEventListener("Main", null));
+        addButton.addActionListener(new AddEventListener(task));
+        backButton.addActionListener(new RedirectEventListener("Add", back, null));
         this.add(backButton);
         this.add(addButton);
+    }
+
+    public DateTimePicker getStart() {
+        return start;
+    }
+
+    public void setStart(DateTimePicker start) {
+        this.start = start;
+    }
+
+    public DateTimePicker getEnd() {
+        return end;
+    }
+
+    public void setEnd(DateTimePicker end) {
+        this.end = end;
+    }
+
+    public DateTimePicker getTime() {
+        return time;
+    }
+
+    public void setTime(DateTimePicker time) {
+        this.time = time;
+    }
+
+    public JTextField getTitle() {
+        return title;
+    }
+
+    public void setTitle(JTextField title) {
+        this.title = title;
+    }
+
+    public IntervalPanel getInterval() {
+        return interval;
+    }
+
+    public void setInterval(IntervalPanel interval) {
+        this.interval = interval;
+    }
+
+    public JCheckBox getActive() {
+        return active;
+    }
+
+    public void setActive(JCheckBox active) {
+        this.active = active;
+    }
+
+    public JCheckBox getChekRepeat() {
+        return chekRepeat;
+    }
+
+    public void setChekRepeat(JCheckBox chekRepeat) {
+        this.chekRepeat = chekRepeat;
+    }
+
+    public JButton getBackButton() {
+        return backButton;
+    }
+
+    public void setBackButton(JButton backButton) {
+        this.backButton = backButton;
+    }
+
+    public JButton getAddButton() {
+        return addButton;
+    }
+
+    public void setAddButton(JButton addButton) {
+        this.addButton = addButton;
+    }
+
+    public JLabel getTitleLabel() {
+        return titleLabel;
+    }
+
+    public void setTitleLabel(JLabel titleLabel) {
+        this.titleLabel = titleLabel;
+    }
+
+    public JLabel getStartLabel() {
+        return startLabel;
+    }
+
+    public void setStartLabel(JLabel startLabel) {
+        this.startLabel = startLabel;
+    }
+
+    public JLabel getEndLabel() {
+        return endLabel;
+    }
+
+    public void setEndLabel(JLabel endLabel) {
+        this.endLabel = endLabel;
+    }
+
+    public JLabel getTimeLabel() {
+        return timeLabel;
+    }
+
+    public void setTimeLabel(JLabel timeLabel) {
+        this.timeLabel = timeLabel;
+    }
+
+    public JLabel getIntervalLabel() {
+        return intervalLabel;
+    }
+
+    public void setIntervalLabel(JLabel intervalLabel) {
+        this.intervalLabel = intervalLabel;
     }
 }

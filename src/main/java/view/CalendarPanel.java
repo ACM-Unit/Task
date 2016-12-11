@@ -23,13 +23,15 @@ import java.util.Set;
 public class CalendarPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(CalendarPanel.class);
     private Map.Entry<Date, Set<Task>> cal;
+    private JLabel datelabel;
+    private JLabel timelabel;
     private int x;
     private int y;
     private Font font;
     public CalendarPanel(Map.Entry<Date, Set<Task>> cal, int x, int y){
         InputStream myStream = null;
         try {
-            myStream = new BufferedInputStream(new FileInputStream("electronik.ttf"));
+            myStream = new BufferedInputStream(new FileInputStream("fonts/electronik.ttf"));
             Font ttfBase = Font.createFont(Font.TRUETYPE_FONT, myStream);
             font = ttfBase.deriveFont(Font.PLAIN, 34);
         } catch (Exception ex) {
@@ -43,8 +45,8 @@ public class CalendarPanel extends JPanel {
         this.setLocation(x,y);
         this.setSize(200,200);
         this.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        JLabel datelabel=new JLabel(dateFormat.format(date));
-        JLabel timelabel=new JLabel(timeFormat.format(date));
+        datelabel=new JLabel(dateFormat.format(date));
+        timelabel=new JLabel(timeFormat.format(date));
         datelabel.setLocation(10,10);
         datelabel.setSize(180,20);
         timelabel.setLocation(10, 40);
@@ -60,13 +62,13 @@ public class CalendarPanel extends JPanel {
             JButton del = new JButton();
             JButton edit = new JButton();
             try {
-                del.setIcon(new ImageIcon("del.png"));
-                edit.setIcon(new ImageIcon("edit.png"));
+                del.setIcon(new ImageIcon("images/del.png"));
+                edit.setIcon(new ImageIcon("images/edit.png"));
             } catch (Exception ex) {
                 LOGGER.error(ex);
             }
             label.setLocation(10,i);
-            label.setSize(180,20);
+            label.setSize(130,20);
             this.add(label);
             del.setLocation(150,i);
             del.addActionListener(new RemoveEventListener(task, "Main"));
@@ -74,9 +76,36 @@ public class CalendarPanel extends JPanel {
             this.add(del);
             edit.setLocation(172,i);
             edit.setSize(20,20);
-            edit.addActionListener(new RedirectEventListener("Add", task));
+            edit.addActionListener(new RedirectEventListener("Main", "Add", task));
             this.add(edit);
             i+=20;
         }
     }
+
+
+    public Map.Entry<Date, Set<Task>> getCal() {
+        return cal;
+    }
+
+    public void setCal(Map.Entry<Date, Set<Task>> cal) {
+        this.cal = cal;
+    }
+
+    public JLabel getDatelabel() {
+        return datelabel;
+    }
+
+    public void setDatelabel(JLabel datelabel) {
+        this.datelabel = datelabel;
+    }
+
+    public JLabel getTimelabel() {
+        return timelabel;
+    }
+
+    public void setTimelabel(JLabel timelabel) {
+        this.timelabel = timelabel;
+    }
+
+
 }

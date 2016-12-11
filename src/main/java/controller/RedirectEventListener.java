@@ -12,24 +12,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Admin on 04.12.2016.
+ * Listener class which redirect to another view form, him implements ActionListener and one him method
  */
 public class RedirectEventListener implements ActionListener {
     private static final Logger LOGGER = Logger.getLogger(RedirectEventListener.class);
+    private String backpanel;
     private String panel;
     private Task task;
-    public RedirectEventListener(String panel, Task task){
+    public RedirectEventListener(String backpanel, String panel, Task task){
+        this.backpanel=backpanel;
         this.panel=panel;
         this.task=task;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Main.frame.removeAll();
         Main.frame.revalidate();
         Main.frame.repaint();
         JPanel newpanel=null;
         if(panel.equals("Add")){
-            newpanel=new AddPanel(task);
+            newpanel=new AddPanel(task, backpanel);
         }else if(panel.equals("Main")){
             newpanel=new MainPanel(Main.frame);
         }else if(panel.equals("All")){
@@ -37,7 +38,5 @@ public class RedirectEventListener implements ActionListener {
         }
         Main.frame.setContentPane(newpanel);
         Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());
-        /*thisPanel.setVisible(false);
-        thatPanel.setVisible(true);*/
     }
 }
