@@ -17,7 +17,7 @@ import static main.Main.PRINTTASKFILE;
 import static main.Main.TASKFILE;
 
 /**
- * Listener class which runs when user saves added task, him implements ActionListener and one him method
+ * Listener class which runs when user saves added task, him implements ActionListener and one method
  */
 public class AddEventListener implements ActionListener {
     private static final Logger LOGGER=Logger.getLogger(AddEventListener.class);
@@ -32,10 +32,15 @@ public class AddEventListener implements ActionListener {
         AddPanel panel = (AddPanel)source.getParent();
         Task task;
         int inter =0;
+        System.out.println(panel.getTitle().getText().length());
         try {
             inter = Integer.parseInt(panel.getInterval().getDays().getText()) * 24 * 60 * 60 + Integer.parseInt(panel.getInterval().getHours().getText()) * 60 * 60 + Integer.parseInt(panel.getInterval().getMinutes().getText()) * 60;
         }catch(NumberFormatException e1){
             JOptionPane.showMessageDialog(null, "Неправильно заполнен интервал. В поля интервала можно вводить только цифры");
+            return;
+        }
+        if(panel.getTitle().getText().length()>30) {
+            JOptionPane.showMessageDialog(null, "Название слишком длинное, оно должно быть не более 30 символов");
             return;
         }
         if(panel.getChekRepeat().isSelected()){

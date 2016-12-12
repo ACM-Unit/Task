@@ -4,17 +4,13 @@
                      debug="false">
 
     <appender name="taskManagerLogFile" class="org.apache.log4j.RollingFileAppender">
-        <param name="file" value="/logs/taskManager.log"/>
+        <param name="file" value="logs/taskManager.log"/>
         <param name="MaxFileSize" value="256KB"/>
         <param name="MaxBackupIndex" value="4"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="task manager >>> %d{dd MMM yyyy HH:mm:ss,SSS} %-5p [%t] (%c{1}) %m%n"/>
         </layout>
     </appender>
-    <category name="com.onddy">
-        <level value="INFO"/>
-        <appender-ref ref="taskManagerLogFile"/>
-    </category>
    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
         <param name="Target" value="System.out"/>
         <layout class="org.apache.log4j.PatternLayout">
@@ -28,11 +24,13 @@
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="taskManagerLogFile"/>
     </appender>
-
+    <logger name="file" additivity="false">
+        <level value="info" />
+        <appender-ref ref="taskManagerLogFile"/>
+    </logger>
    <root>
         <priority value="debug"/>
         <appender-ref ref="taskManagerLogFile"/>
         <appender-ref ref="ASYNC"/>
     </root>
-
 </log4j:configuration>

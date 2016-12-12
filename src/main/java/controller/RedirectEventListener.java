@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Listener class which redirect to another view form, him implements ActionListener and one him method
+ * Listener class which redirect to another view form, him implements ActionListener and one method
  */
 public class RedirectEventListener implements ActionListener {
     private static final Logger LOGGER = Logger.getLogger(RedirectEventListener.class);

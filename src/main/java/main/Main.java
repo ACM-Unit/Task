@@ -27,7 +27,7 @@ public class Main {
         myThread = new Thread(new Runnable(){
             @Override
             public void run() {
-                LOGGER.info("new Thread");
+                LOGGER.info("Tracking thread has been started");
                 while(true) {
                     mon=false;
                     Task foundTask=null;
@@ -91,6 +91,8 @@ public class Main {
         try {
             TaskIO.readBinary(tasks, new File(TASKFILE));
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Нет сохраненных задач");
+        } catch (ClassNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Нет сохраненных задач");
         }
         frame = new MainFrame();

@@ -21,10 +21,10 @@ public class TaskIO {
                 dos.writeObject(task);
             }
         } catch (IOException e) {
-            System.out.println("error writing object");
+            throw new IOException("error writing object");
         }
     }
-    public static void read(TaskList tasks, InputStream in)  throws IOException {
+    public static void read(TaskList tasks, InputStream in) throws IOException, ClassNotFoundException {
         try(ObjectInputStream dos = new ObjectInputStream(in)) {
             inStream(tasks, dos);
         } catch (IOException e) {
@@ -41,14 +41,14 @@ public class TaskIO {
             throw new IOException("error writing object");
         }
     }
-    public static void readBinary(TaskList tasks, File file) throws IOException {
+    public static void readBinary(TaskList tasks, File file) throws IOException, ClassNotFoundException {
         try(ObjectInputStream dos = new ObjectInputStream(new FileInputStream(file))) {
             inStream(tasks, dos);
         } catch (IOException e) {
             throw new IOException("error reading object");
         }
     }
-    private static void inStream(TaskList tasks, ObjectInputStream dos) throws IOException {
+    private static void inStream(TaskList tasks, ObjectInputStream dos) throws IOException, ClassNotFoundException {
         int length = dos.readInt();
         for(int i=0; i<length; i++){
             try {
@@ -56,11 +56,12 @@ public class TaskIO {
                 System.out.println(task.getTitle());
                 tasks.add(task);
             } catch (ClassNotFoundException e) {
-                System.out.println("objects class not found");
+                throw new ClassNotFoundException("objects class not found");
+
             }
         }
     }
-    public static void write(TaskList tasks, Writer out){
+    public static void write(TaskList tasks, Writer out) throws IOException {
         try(BufferedWriter writer = new BufferedWriter(out)) {
             Iterator iter=tasks.iterator();
             while(iter.hasNext()) {
@@ -69,17 +70,17 @@ public class TaskIO {
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.out.println("error writing chars");
+            throw new IOException("error writing chars");
         }
     }
-    public static void read(TaskList tasks, Reader in) throws ParseException {
+    public static void read(TaskList tasks, Reader in) throws ParseException, IOException {
         try(BufferedReader reader = new BufferedReader(in)) {
             String stream;
             while((stream=reader.readLine())!=null){
                 tasks.add(parsingTask(stream));
             }
         }catch(IOException e){
-            System.out.println("error reading chars");
+            throw new IOException("error reading chars");
         }
     }
     private static Task parsingTask(String stringTask) throws ParseException {
@@ -167,19 +168,19 @@ public class TaskIO {
             return task;
         }
     }
-     public static void writeText(TaskList tasks, File file) {
+     public static void writeText(TaskList tasks, File file) throws IOException {
         try(Writer stream = new FileWriter(file)){
             write(tasks, stream);
         } catch (IOException e) {
-            System.out.println("error writing chars");
+            throw new IOException("error writing chars");
         }
 
     }
-    public static void readText(TaskList tasks, File file) throws ParseException {
+    public static void readText(TaskList tasks, File file) throws ParseException, IOException {
         try(Reader stream = new FileReader(file)) {
             read(tasks, stream);
         }catch(IOException e){
-            System.out.println("error reading chars");
+            throw new IOException("error reading chars");
         }
     }
 

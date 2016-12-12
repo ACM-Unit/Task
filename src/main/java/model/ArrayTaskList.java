@@ -78,7 +78,6 @@ public class ArrayTaskList extends TaskList {
     /**
      * method, which removes task in this collection
      * @param task removable task
-     * @throws NullPointerException  - exception which will, when parameter - "task" equals null
      */
     @Override
     public boolean remove(Task task) {
