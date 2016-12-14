@@ -12,6 +12,7 @@
     <properties>
         <jdk.version>1.8</jdk.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>log4j</groupId>
@@ -20,13 +21,20 @@
         </dependency>
         <dependency>
             <groupId>swingx</groupId>
-            <artifactId>swingx</artifactId>
-            <version>all-1.6.5</version>
+            <artifactId>swingx-all</artifactId>
+            <version>1.6.5</version>
             <scope>system</scope>
-            <systemPath>D:/1/swingx-all-1.6.5.jar</systemPath>
+            <systemPath>${project.basedir}/repo/swingx/swingx-all/1.6.5/swingx-all-1.6.5.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.kevoree.platform</groupId>
+            <artifactId>org.kevoree.platform.standalone.gui</artifactId>
+            <version>3.4.1</version>
         </dependency>
     </dependencies>
+
     <build>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -38,7 +46,6 @@
                             <addClasspath>true</addClasspath>
                             <mainClass>main.Main</mainClass>
                             <packageName>main</packageName>
-                            <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
@@ -51,12 +58,17 @@
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>package</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
+                            <includeScope>system</includeScope>
+                            <includeScope>compile</includeScope>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
                     </execution>
                 </executions>
@@ -71,5 +83,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

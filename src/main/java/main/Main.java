@@ -92,6 +92,7 @@ public class Main {
                 }
             }
         });
+
         try {
             TaskIO.readBinary(tasks, new File(TASKFILE));
         } catch (IOException e) {
