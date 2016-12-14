@@ -18,9 +18,16 @@ import static main.Main.TASKFILE;
 
 /**
  * Listener class which runs when user wants remove task, him implements ActionListener and one method
+ * @autor koshchii slava
  */
 public class RemoveEventListener implements ActionListener {
     private static final Logger LOGGER=Logger.getLogger(RemoveEventListener.class);
+
+    /**
+     * Constructor with two parameters
+     * @param task - Task
+     * @param panel - panel for repaint
+     */
     public RemoveEventListener(Task task, String panel){
         this.task=task;
         this.panel=panel;
@@ -50,6 +57,7 @@ public class RemoveEventListener implements ActionListener {
             LOGGER.info("Task with name "+task.getTitle()+" was removed");
         } catch (IOException e1) {
             LOGGER.error(e1);
+            JOptionPane.showMessageDialog(null, "При удалении возникла непредвиденная ошибка");
         }
     }
 }

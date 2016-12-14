@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 /**
  * Listener class which runs when user changes repeat properties of editable task
+ * @autor koshchii slava
  */
 public class RepeatEventListener implements ActionListener {
     private static final Logger LOGGER=Logger.getLogger(RepeatEventListener.class);

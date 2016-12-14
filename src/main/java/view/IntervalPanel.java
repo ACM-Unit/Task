@@ -3,7 +3,8 @@ package view;
 import javax.swing.*;
 
 /**
- * Created by Admin on 08.12.2016.
+ * Class which displays field for enter interval
+ * @autor koshchii slava
  */
 public class IntervalPanel extends JPanel {
     private JFormattedTextField days;
@@ -12,6 +13,13 @@ public class IntervalPanel extends JPanel {
     private JLabel ldays=new JLabel("дней");
     private JLabel lhours=new JLabel("часов");
     private JLabel lminutes=new JLabel("минут");
+
+    /**
+     * Constructor with three int parameters
+     * @param day - number of days
+     * @param hour - number of hours
+     * @param minute - number of minutes
+     */
     public IntervalPanel(int day, int hour, int minute){
         days = new javax.swing.JFormattedTextField();
         days.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(java.text.NumberFormat.getIntegerInstance())));

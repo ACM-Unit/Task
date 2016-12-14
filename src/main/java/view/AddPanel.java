@@ -14,7 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by Admin on 06.12.2016.
+ * Class which displays field for create new task
+ * @autor koshchii slava
  */
 public class AddPanel extends JPanel {
     private static final Logger LOGGER=Logger.getLogger(AddPanel.class);
@@ -32,6 +33,12 @@ public class AddPanel extends JPanel {
     private JLabel endLabel=new JLabel("Время конца");
     private JLabel timeLabel=new JLabel("Время");
     private JLabel intervalLabel=new JLabel("Интервал");
+
+    /**
+     * Constructor with two parameters Task and String types
+     * @param task
+     * @param back
+     */
     public AddPanel(Task task, String back){
         this.setSize(395,310);
         this.setLayout(null);
@@ -58,7 +65,6 @@ public class AddPanel extends JPanel {
         chekRepeat=new JCheckBox("Цикличная", task.isRepeated());
         chekRepeat.setSize(200,30);
         chekRepeat.setLocation(120, 5);
-        this.add(chekRepeat);
         Map<JLabel, JComponent> addMap=new LinkedHashMap<>();
         addMap.put(titleLabel, title);
         addMap.put(startLabel, start);
@@ -114,13 +120,14 @@ public class AddPanel extends JPanel {
             intervalLabel.setVisible(false);
             timeLabel.setVisible(true);
         }
-        chekRepeat.addActionListener(new RepeatEventListener());
         backButton.setSize(150, 30);
         backButton.setLocation(10, 232);
         addButton.setSize(150, 30);
         addButton.setLocation(170, 232);
+        chekRepeat.addActionListener(new RepeatEventListener());
         addButton.addActionListener(new AddEventListener(task));
         backButton.addActionListener(new RedirectEventListener("Add", back, null));
+        this.add(chekRepeat);
         this.add(backButton);
         this.add(addButton);
     }

@@ -12,7 +12,8 @@ import java.awt.*;
 import java.util.*;
 
 /**
- * Created by Admin on 06.12.2016.
+ * Class main panel which displays daily calendar and application logo
+ * @autor koshchii slava
  */
 public class MainPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(MainPanel.class);
@@ -25,6 +26,11 @@ public class MainPanel extends JPanel {
     private JPanel panel = new JPanel(new BorderLayout());
     private JPanel head=new JPanel();
     private JPanel panelIn = new JPanel();
+
+    /**
+     * Constructor with one parameter
+     * @param frame - Main frame
+     */
     public MainPanel(MainFrame frame){
         panel.add( label, BorderLayout.CENTER );
         panel.setSize(414, 70);
@@ -55,12 +61,23 @@ public class MainPanel extends JPanel {
         Calendar calEnd = Calendar.getInstance();
         calEnd.add(Calendar.DATE, 1);
         Date endDate=calEnd.getTime();
-        SortedMap<Date, Set<Task>> calendar= Tasks.calendar(Main.tasks, nowDate, endDate);
+        SortedMap<Date, Set<Task>> calendar= null;
+        try {
+            calendar = Tasks.calendar(Main.tasks, nowDate, endDate);
+        } catch (InstantiationException e) {
+            LOGGER.error(e);
+            JOptionPane.showMessageDialog(null, "Непредвиденная ошибка");
+            return;
+        } catch (IllegalAccessException e) {
+            LOGGER.error(e);
+            JOptionPane.showMessageDialog(null, "Непредвиденная ошибка");
+            return;
+        }
         Iterator iter=calendar.entrySet().iterator();
         head.setLocation(5,110);
-        head.setSize(this.getWidth()-15,210);
+        head.setSize(this.getWidth()-15,212);
         panelIn.setLayout(null);
-        panelIn.setPreferredSize(new Dimension(210*calendar.size(),200));
+        panelIn.setPreferredSize(new Dimension(208*calendar.size(),202));
         panelIn.setSize(this.getWidth()-15,210);
         JScrollPane scroll = new JScrollPane(panelIn);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);

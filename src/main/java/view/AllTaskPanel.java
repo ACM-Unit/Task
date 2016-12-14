@@ -12,7 +12,8 @@ import javax.swing.border.EtchedBorder;
 import java.util.Date;
 
 /**
- * Created by Admin on 06.12.2016.
+ * Class which displays all tasks
+ * @autor koshchii slava
  */
 public class AllTaskPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(AllTaskPanel.class);
@@ -20,6 +21,10 @@ public class AllTaskPanel extends JPanel {
     private JButton backButton = new JButton("назад");
     private JButton addbutton = new JButton();
     private JButton printbutton = new JButton();
+
+    /**
+     * Constructor without parameters
+     */
     public AllTaskPanel(){
         this.setSize(245,80);
         this.setLayout(null);

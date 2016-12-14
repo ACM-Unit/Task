@@ -6,11 +6,15 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 
 /**
- * Created by Admin on 29.11.2016.
+ * Class main form
+ * @autor koshchii slava
  */
 public class MainFrame extends JFrame {
 private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
-    //private Font font;
+
+    /**
+     * Constructor without parameters
+     */
     public MainFrame(){
         super("Task manager");
         this.setBounds(300,180,643,370);

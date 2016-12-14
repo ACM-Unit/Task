@@ -22,26 +22,7 @@ public class Task implements Serializable, Cloneable {
      * @param title - name of the new task
      * @param time - date of execution task
      */
-     public Task (String title, int time){
-            this.title = title;
-            this.time=new Date(time*1000);
-            this.start = new Date(0);
-            this.end = new Date(0);
-            this.interval = 0;
-            this.active = false;
-     }
-	public Task (String title, int start, int end, int interval){
-     if(end<start || interval<0){
-            throw new IllegalArgumentException();
-        }else{
-            this.title = title;
-            this.start = new Date(start*1000);
-            this.end = new Date(end*1000);
-            this.interval = interval*1000;
-            this.active = false;
-            this.time = new Date(0);
-        }
-    }
+
     public Task(String title, Date time) {
             this.title = title;
             this.time = time;
@@ -104,17 +85,6 @@ public class Task implements Serializable, Cloneable {
             start.setTime(0);
             end.setTime(0);
             interval = 0;
-    }
-    public void setTime(int start, int end, int interval){
-    if(end<start || interval<=0){
-            throw new IllegalArgumentException();
-        }else{
-            this.start = new Date(start*1000);
-            this.end = new Date(end*1000);
-            this.interval = interval*1000;
-            active = false;
-            time = new Date(0);
-        }
     }
 	public void setTime(Date start, Date end, int interval){
     if(end.compareTo(start)<0 || interval<=0){
@@ -185,21 +155,6 @@ public class Task implements Serializable, Cloneable {
             return o.equals(this) ? true : false;
         }
         return false;
-    }
-
-    public void setInterval(int interval) {
-    if(interval==0){
-          throw new IllegalArgumentException();
-    }
-        this.interval = interval*1000;
-    }
-
-    public void setStart(Date start) {
-        this.start = start;
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
     }
 
     @Override

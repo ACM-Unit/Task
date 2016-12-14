@@ -13,10 +13,13 @@ import java.io.IOException;
 
 import static main.Main.PRINTTASKFILE;
 
+/**
+ * Class: Printer
+ * This class to print list of tasks
+ * @autor koshchii slava
+ */
 public class Printer implements Printable {
     private static final Logger LOGGER=Logger.getLogger(Printer.class);
-
-    private final double INCH = 72;
 
 
     public Printer() {
@@ -37,18 +40,11 @@ public class Printer implements Printable {
 
     /**
      * Method: print
-     * <p>
+     * This method converts all task from text file to format for printing
      *
-     * This class is responsible for rendering a page using the provided
-     * parameters. The result will be a grid where each cell will be half an
-     * inch by half an inch.
-     *
-     * @param g
-     *            a value of type Graphics
-     * @param pf
-     *            a value of type PageFormat
-     * @param pagenum
-     *            a value of type int
+     * @param g a value of type Graphics
+     * @param pf a value of type PageFormat
+     * @param pagenum a value of type int
      * @return a value of type int
      */
     public int print(Graphics g, PageFormat pf, int pagenum) {

@@ -11,7 +11,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Admin on 19.09.2016.
+ * Class: TaskIO
+ * This class uses for work with input and output streams
+ * @autor koshchii slava
  */
 public class TaskIO {
     public static void write(TaskList tasks, OutputStream out) throws IOException{
@@ -53,7 +55,6 @@ public class TaskIO {
         for(int i=0; i<length; i++){
             try {
                 Task task = (Task)dos.readObject();
-                System.out.println(task.getTitle());
                 tasks.add(task);
             } catch (ClassNotFoundException e) {
                 throw new ClassNotFoundException("objects class not found");

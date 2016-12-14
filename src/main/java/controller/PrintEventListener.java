@@ -6,7 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Admin on 11.12.2016.
+ * Listener class to print list af all tasks
+ * @autor koshchii slava
  */
 public class PrintEventListener implements ActionListener {
     @Override

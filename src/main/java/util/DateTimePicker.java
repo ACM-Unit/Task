@@ -1,8 +1,5 @@
 package util;
 
-/**
- * Created by Admin on 04.12.2016.
- */
 import org.jdesktop.swingx.calendar.SingleDaySelectionModel;
 import org.jdesktop.swingx.JXDatePicker;
 
@@ -14,6 +11,10 @@ import java.text.ParseException;
 import java.util.*;
 import java.awt.*;
 
+/**
+ * class which describe component to select dates on add tasks panel
+ * @autor koshchii slava
+ */
 public class DateTimePicker extends JXDatePicker {
     private JSpinner timeSpinner;
     private JPanel timePanel;
@@ -52,8 +53,6 @@ public class DateTimePicker extends JXDatePicker {
     private JPanel createTimePanel() {
         JPanel newPanel = new JPanel();
         newPanel.setLayout(new FlowLayout());
-        //newPanel.add(panelOriginal);
-
         SpinnerDateModel dateModel = new SpinnerDateModel();
         timeSpinner = new JSpinner(dateModel);
         if( timeFormat == null ) timeFormat = DateFormat.getTimeInstance( DateFormat.SHORT );
@@ -107,21 +106,5 @@ public class DateTimePicker extends JXDatePicker {
     public void setTimeFormat(DateFormat timeFormat) {
         this.timeFormat = timeFormat;
         updateTextFieldFormat();
-    }
-
-    public static void dmain(String[] args) {
-        Date date = new Date();
-        JFrame frame = new JFrame();
-        frame.setTitle("Date Time Picker");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        DateTimePicker dateTimePicker = new DateTimePicker();
-        dateTimePicker.setFormats( DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.MEDIUM ) );
-        dateTimePicker.setTimeFormat( DateFormat.getTimeInstance( DateFormat.MEDIUM ) );
-
-        dateTimePicker.setDate(date);
-
-        frame.getContentPane().add(dateTimePicker);
-        frame.pack();
-        frame.setVisible(true);
     }
 }

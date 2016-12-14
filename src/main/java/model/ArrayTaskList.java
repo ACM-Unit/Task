@@ -129,7 +129,6 @@ public class ArrayTaskList extends TaskList {
         Task task=(Task)iterator.next();
         Task task1=(Task)iterator1.next();
             if (!task.equals(task1)) {
-            System.out.println(task);
                 return false;
             }
         }

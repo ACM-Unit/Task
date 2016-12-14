@@ -13,16 +13,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
+/**
+ * Main class with tracking thread to search the nearest date
+ * @autor koshchii slava
+ */
 public class Main {
     public static final Object MONITOR = new Object();
     public static final String TASKFILE = "sources/tasks.tsk";
     public static final String PRINTTASKFILE = "sources/printtasks.tsk";
     public static final String SOUNDFILE = "sounds/sound.wav";
-    private static final Logger LOGGER = Logger.getLogger(Main.class);
     public static Thread myThread;
     public static boolean mon=true;
     public static volatile TaskList tasks=new ArrayTaskList();
     public static MainFrame frame;
+    private static final long TWENTYFORHOURS=1000*60*60*24;
+    private static final Logger LOGGER = Logger.getLogger(Main.class);
     public static void main(String[] args) {
         myThread = new Thread(new Runnable(){
             @Override
@@ -43,7 +48,7 @@ public class Main {
                             LOGGER.error(e);
                         }
                     }
-                    long millis=60000*60*24;
+                    long millis=TWENTYFORHOURS;
                     for(Task task:tasks){
                         long m=task.nextTimeAfter(new Date()).getTime()-new Date().getTime();
                         if(m<millis && m>0){
@@ -71,7 +76,6 @@ public class Main {
                             clip.start();
                         } catch (UnsupportedAudioFileException e) {
                             LOGGER.error("Unsupported audio file exception"+e);
-                            e.printStackTrace();
                         } catch (IOException e) {
                             LOGGER.error("Stream error"+e);
                         } catch (LineUnavailableException e) {

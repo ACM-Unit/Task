@@ -1,6 +1,8 @@
 package model;
 
 
+import org.apache.log4j.Logger;
+
 import java.util.*;
 
 /**
@@ -9,7 +11,7 @@ import java.util.*;
  *
  */
 public class Tasks {
-
+    private static final Logger LOGGER = Logger.getLogger(Tasks.class);
     /**
      *This method searches for all tasks in the period between the dates that is the parameters in this method - "from" and "to"
      * @param tasks is a collection of tasks
@@ -17,15 +19,9 @@ public class Tasks {
      * @param to is end date in this period
      * @return collection of tasks
      */
-    public static Iterable<Task> incoming(Iterable<Task> tasks, Date from, Date to) {
+    public static Iterable<Task> incoming(Iterable<Task> tasks, Date from, Date to) throws InstantiationException, IllegalAccessException {
         TaskList incomingList = null;
-        try {
-            incomingList = (TaskList)tasks.getClass().newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        incomingList = (TaskList)tasks.getClass().newInstance();
         Iterator iter=tasks.iterator();
         while(iter.hasNext()) {
             Task task=(Task)iter.next();
@@ -43,7 +39,7 @@ public class Tasks {
      * @param end is end date in this period
      * @return collection with keys, which are Dates, and values, which are sets of task
      */
-    public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, Date start, Date end)  throws IllegalArgumentException {
+    public static SortedMap<Date, Set<Task>> calendar(Iterable<Task> tasks, Date start, Date end)  throws IllegalArgumentException, InstantiationException, IllegalAccessException {
         if (end.compareTo(start) <= 0) {
             throw new IllegalArgumentException();
         }
@@ -53,7 +49,6 @@ public class Tasks {
         while (iter.hasNext()) {
             Task task = (Task) iter.next();
             if (task.isRepeated() && task.getDateEnd().after(task.getDateStart())) {
-                System.out.println("calendar - " + task.getTitle());
                 Date date = start;
                 while ((date.before(end) || date.equals(end)) && date.getTime() != -1 && date.compareTo(start) >= 0) {
                     if (date.equals(task.nextTimeAfter(date)) && date.getTime() != -1) {

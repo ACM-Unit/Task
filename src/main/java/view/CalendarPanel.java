@@ -18,7 +18,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Created by Admin on 06.12.2016.
+ * Class which describe one timing panel of daily calendar
+ * @autor koshchii slava
  */
 public class CalendarPanel extends JPanel {
     private static final Logger LOGGER = Logger.getLogger(CalendarPanel.class);
@@ -28,6 +29,13 @@ public class CalendarPanel extends JPanel {
     private int x;
     private int y;
     private Font font;
+
+    /**
+     * Constructor with three parameters Map.Entry and ints types
+     * @param cal - collection of Dates and Sets of Tasks
+     * @param x - coordinate x
+     * @param y - coordinate y
+     */
     public CalendarPanel(Map.Entry<Date, Set<Task>> cal, int x, int y){
         InputStream myStream = null;
         try {
@@ -36,7 +44,7 @@ public class CalendarPanel extends JPanel {
             font = ttfBase.deriveFont(Font.PLAIN, 34);
         } catch (Exception ex) {
             ex.printStackTrace();
-            System.err.println("Font not loaded.");
+            LOGGER.error("Font not loaded.");
         }
         Date date = cal.getKey();
         DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");

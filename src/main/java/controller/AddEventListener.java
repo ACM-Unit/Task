@@ -18,10 +18,16 @@ import static main.Main.TASKFILE;
 
 /**
  * Listener class which runs when user saves added task, him implements ActionListener and one method
+ * @autor koshchii slava
  */
 public class AddEventListener implements ActionListener {
     private static final Logger LOGGER=Logger.getLogger(AddEventListener.class);
     private Task removedtask;
+
+    /**
+     * Constructor with one parameter
+     * @param task - Task
+     */
     public AddEventListener(Task task){
         removedtask=task;
     }
@@ -32,7 +38,6 @@ public class AddEventListener implements ActionListener {
         AddPanel panel = (AddPanel)source.getParent();
         Task task;
         int inter =0;
-        System.out.println(panel.getTitle().getText().length());
         try {
             inter = Integer.parseInt(panel.getInterval().getDays().getText()) * 24 * 60 * 60 + Integer.parseInt(panel.getInterval().getHours().getText()) * 60 * 60 + Integer.parseInt(panel.getInterval().getMinutes().getText()) * 60;
         }catch(NumberFormatException e1){
@@ -92,9 +97,10 @@ public class AddEventListener implements ActionListener {
                 synchronized( Main.MONITOR  ) {
                     Main.MONITOR.notify();
                 }
-                LOGGER.info("New Task was added");
+                LOGGER.info("New Task with name"+task.getTitle()+"was added");
             } catch (IOException e1) {
                 LOGGER.error(e1);
+                JOptionPane.showMessageDialog(null, "При создании новой задачи возникла непредвиденная ошибка");
             }
         }
 
