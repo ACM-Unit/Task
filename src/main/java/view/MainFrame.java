@@ -19,7 +19,7 @@ private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
         super("Task manager");
         this.setBounds(300,180,643,370);
         this.setResizable(false);
-        ImageIcon imageIcon = new ImageIcon("images/Logo.png");
+        ImageIcon imageIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/Logo.png"));
         this.setIconImage(imageIcon.getImage());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(new MainPanel(this));

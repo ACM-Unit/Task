@@ -85,11 +85,9 @@ public class DateTimePicker extends JXDatePicker {
             calendar.set(Calendar.MINUTE, timeCalendar.get( Calendar.MINUTE ) );
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
-
             Date newDate = calendar.getTime();
             setDate(newDate);
         }
-
     }
 
     private void setTimeSpinners() {

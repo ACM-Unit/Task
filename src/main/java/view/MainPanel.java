@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.*;
 
 /**
@@ -21,7 +22,11 @@ public class MainPanel extends JPanel {
     private JButton addbutton = new JButton();
     private JButton printbutton = new JButton();
     private JButton allbutton = new JButton();
-    private ImageIcon image = new ImageIcon("images/LogoHead.png");
+    final URL url = Thread.currentThread().getContextClassLoader().getResource("images/LogoHead.png");
+    final URL urlAdd = Thread.currentThread().getContextClassLoader().getResource("images/add.png");
+    final URL urlAll = Thread.currentThread().getContextClassLoader().getResource("images/list.png");
+    final URL urlPrint = Thread.currentThread().getContextClassLoader().getResource("images/printer.png");
+    private ImageIcon image = new ImageIcon(url);
     private JLabel label = new JLabel("", image, JLabel.CENTER);
     private JPanel panel = new JPanel(new BorderLayout());
     private JPanel head=new JPanel();
@@ -47,15 +52,15 @@ public class MainPanel extends JPanel {
         headlabel.setLocation(50, 90);
         addbutton.setSize(30,30);
         addbutton.setLocation(this.getWidth()-110, 5);
-        addbutton.setIcon(new ImageIcon("images/add.png"));
+        addbutton.setIcon(new ImageIcon(urlAdd));
         addbutton.addActionListener(new RedirectEventListener("Main", "Add", new Task("", new Date())));
         printbutton.setSize(30,30);
         printbutton.setLocation(this.getWidth()-40, 5);
-        printbutton.setIcon(new ImageIcon("images/printer.png"));
+        printbutton.setIcon(new ImageIcon(urlPrint));
         printbutton.addActionListener(new PrintEventListener());
         allbutton.setSize(30,30);
         allbutton.setLocation(this.getWidth()-75, 5);
-        allbutton.setIcon(new ImageIcon("images/list.png"));
+        allbutton.setIcon(new ImageIcon(urlAll));
         allbutton.addActionListener(new RedirectEventListener("Main","All", null));
         Date nowDate=new Date();
         Calendar calEnd = Calendar.getInstance();

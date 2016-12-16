@@ -13,9 +13,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
-import static main.Main.PRINTTASKFILE;
-import static main.Main.TASKFILE;
-
 /**
  * Listener class which runs when user wants remove task, him implements ActionListener and one method
  * @autor koshchii slava
@@ -38,8 +35,7 @@ public class RemoveEventListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Main.tasks.remove(task);
         try {
-            TaskIO.writeBinary(Main.tasks, new File(TASKFILE));
-            TaskIO.writeText(Main.tasks, new File(PRINTTASKFILE));
+            TaskIO.writeBinary(Main.tasks, new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile()+"/tasks.tsk"));
             Main.frame.revalidate();
             Main.frame.repaint();
             JPanel newpanel=null;

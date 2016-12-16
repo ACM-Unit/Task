@@ -6,11 +6,15 @@ import model.TaskIO;
 import model.TaskList;
 import org.apache.log4j.Logger;
 import view.MainFrame;
+import view.MainPanel;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -21,6 +25,9 @@ public class Main {
     public static final Object MONITOR = new Object();
     public static final String TASKFILE = "sources/tasks.tsk";
     public static final String PRINTTASKFILE = "sources/printtasks.tsk";
+    public static final URL urlSound = Thread.currentThread().getContextClassLoader().getResource("sounds/sound.wav");
+    public static InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("sources/tasks.tsk");
+    public static final URL urlPrint = Thread.currentThread().getContextClassLoader().getResource("sources/printtasks.tsk");
     public static final String SOUNDFILE = "sounds/sound.wav";
     public static Thread myThread;
     public static boolean mon=true;
@@ -68,7 +75,7 @@ public class Main {
                     if(mon) {
                         String soundName = SOUNDFILE;
                         Clip clip=null;
-                        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile())){
+                        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(urlSound)){
                             clip= AudioSystem.getClip();
                             clip.open(audioInputStream);
                             clip.setFramePosition(0);
@@ -81,12 +88,47 @@ public class Main {
                         } catch (LineUnavailableException e) {
                             LOGGER.error("Line unavailable exception"+e);
                         }
-                        final JOptionPane optionPane = new JOptionPane();
-                        final JDialog dialog = new JDialog();
-                        dialog.setAlwaysOnTop(true);
-                        optionPane.showMessageDialog(dialog, foundTask.getTitle());
-                        if ((int)optionPane.getMessageType()==-1) {
-                            clip.stop();
+                            final JOptionPane optionPane = new JOptionPane();
+                            final JDialog dialog = new JDialog();
+                            dialog.setAlwaysOnTop(true);
+                            Object[] options = {"завершить",
+                                    "Отложить на 5 минут"};
+                            int n = JOptionPane.showOptionDialog(dialog,
+                                    foundTask.getTitle(),
+                                    "Оповещение",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE,
+                                    null,     //do not use a custom Icon
+                                    options,  //the titles of buttons
+                                    options[0]);
+                            if (n == 0) {
+                                clip.stop();
+                                if(foundTask.getTitle().contains(" (повтор)")){
+                                    tasks.remove(foundTask);
+                                }
+                                Main.frame.revalidate();
+                                Main.frame.repaint();
+                                MainPanel newpanel=new MainPanel(Main.frame);
+                                Main.frame.setContentPane(newpanel);
+                                Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());
+                            } else if (n == 1) {
+                                clip.stop();
+                                Calendar date = Calendar.getInstance();
+                                long t = date.getTimeInMillis();
+                                Task repeatTask = null;
+                                if(foundTask.getTitle().contains(" (повтор)")){
+                                    tasks.remove(foundTask);
+                                    repeatTask = new Task(foundTask.getTitle(), new Date(t + 5 * 60 * 1000));
+                                }else {
+                                    repeatTask = new Task(foundTask.getTitle() + " (повтор)", new Date(t + 5 * 60 * 1000));
+                                }
+                                repeatTask.setActive(true);
+                                tasks.add(repeatTask);
+                                Main.frame.revalidate();
+                                Main.frame.repaint();
+                                MainPanel newpanel=new MainPanel(Main.frame);
+                                Main.frame.setContentPane(newpanel);
+                                Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());
                         }
                     }
                 }
@@ -94,7 +136,7 @@ public class Main {
         });
 
         try {
-            TaskIO.readBinary(tasks, new File(TASKFILE));
+            TaskIO.readBinary(tasks, new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile()+"/tasks.tsk"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Нет сохраненных задач");
         } catch (ClassNotFoundException e) {

@@ -33,13 +33,14 @@ public class AddPanel extends JPanel {
     private JLabel endLabel=new JLabel("Время конца");
     private JLabel timeLabel=new JLabel("Время");
     private JLabel intervalLabel=new JLabel("Интервал");
-
+    private String back;
     /**
      * Constructor with two parameters Task and String types
      * @param task
      * @param back
      */
     public AddPanel(Task task, String back){
+        this.back=back;
         this.setSize(395,310);
         this.setLayout(null);
         start.setFormats( DateFormat.getDateTimeInstance( DateFormat.SHORT, DateFormat.MEDIUM ) );
@@ -130,6 +131,14 @@ public class AddPanel extends JPanel {
         this.add(chekRepeat);
         this.add(backButton);
         this.add(addButton);
+    }
+
+    public String getBack() {
+        return back;
+    }
+
+    public void setBack(String back) {
+        this.back = back;
     }
 
     public DateTimePicker getStart() {

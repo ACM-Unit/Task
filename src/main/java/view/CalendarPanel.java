@@ -8,8 +8,6 @@ import org.apache.log4j.Logger;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import java.awt.*;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,7 +37,7 @@ public class CalendarPanel extends JPanel {
     public CalendarPanel(Map.Entry<Date, Set<Task>> cal, int x, int y){
         InputStream myStream = null;
         try {
-            myStream = new BufferedInputStream(new FileInputStream("fonts/electronik.ttf"));
+            myStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("fonts/electronik.ttf");
             Font ttfBase = Font.createFont(Font.TRUETYPE_FONT, myStream);
             font = ttfBase.deriveFont(Font.PLAIN, 34);
         } catch (Exception ex) {
@@ -70,8 +68,8 @@ public class CalendarPanel extends JPanel {
             JButton del = new JButton();
             JButton edit = new JButton();
             try {
-                del.setIcon(new ImageIcon("images/del.png"));
-                edit.setIcon(new ImageIcon("images/edit.png"));
+                del.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/del.png")));
+                edit.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/edit.png")));
             } catch (Exception ex) {
                 LOGGER.error(ex);
             }

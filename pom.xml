@@ -27,9 +27,9 @@
             <systemPath>${project.basedir}/repo/swingx/swingx-all/1.6.5/swingx-all-1.6.5.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>org.kevoree.platform</groupId>
-            <artifactId>org.kevoree.platform.standalone.gui</artifactId>
-            <version>3.4.1</version>
+            <groupId>com.jolira</groupId>
+            <artifactId>onejar-maven-plugin</artifactId>
+            <version>1.4.4</version>
         </dependency>
     </dependencies>
 
@@ -51,28 +51,23 @@
                     </archive>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.4</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <includeScope>system</includeScope>
-                            <includeScope>compile</includeScope>
-                            <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                            <overWriteReleases>false</overWriteReleases>
-                            <overWriteSnapshots>false</overWriteSnapshots>
-                            <overWriteIfNewer>true</overWriteIfNewer>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+         <plugin>
+            <groupId>com.jolira</groupId>
+            <artifactId>onejar-maven-plugin</artifactId>
+            <version>1.4.4</version>
+            <executions>
+                <execution>
+                    <configuration>
+                        <mainClass>main.Main</mainClass>
+                    </configuration>
+                    <goals>
+                        <goal>one-jar</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -81,6 +76,7 @@
                     <target>${jdk.version}</target>
                 </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

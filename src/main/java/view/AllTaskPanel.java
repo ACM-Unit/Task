@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
+import java.net.URL;
 import java.util.Date;
 
 /**
@@ -21,6 +22,8 @@ public class AllTaskPanel extends JPanel {
     private JButton backButton = new JButton("назад");
     private JButton addbutton = new JButton();
     private JButton printbutton = new JButton();
+    private final URL urlAdd = Thread.currentThread().getContextClassLoader().getResource("images/add.png");
+    private final URL urlPrint = Thread.currentThread().getContextClassLoader().getResource("images/printer.png");
 
     /**
      * Constructor without parameters
@@ -40,8 +43,8 @@ public class AllTaskPanel extends JPanel {
             JButton del = new JButton();
             JButton edit = new JButton();
             try {
-                del.setIcon(new ImageIcon("images/del.png"));
-                edit.setIcon(new ImageIcon("images/edit.png"));
+                del.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/del.png")));
+                edit.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/edit.png")));
             } catch (Exception ex) {
                 LOGGER.error(ex);
             }
@@ -71,11 +74,11 @@ public class AllTaskPanel extends JPanel {
         menu.add(printbutton);
         addbutton.setSize(30,30);
         addbutton.setLocation(155, 5);
-        addbutton.setIcon(new ImageIcon("images/add.png"));
+        addbutton.setIcon(new ImageIcon(urlAdd));
         addbutton.addActionListener(new RedirectEventListener("All","Add", new Task("", new Date())));
         printbutton.setSize(30,30);
         printbutton.setLocation(190, 5);
-        printbutton.setIcon(new ImageIcon("images/printer.png"));
+        printbutton.setIcon(new ImageIcon(urlPrint));
         printbutton.addActionListener(new PrintEventListener());
         this.add(menu);
     }

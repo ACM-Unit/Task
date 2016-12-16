@@ -5,6 +5,8 @@ import model.Task;
 import model.TaskIO;
 import org.apache.log4j.Logger;
 import view.AddPanel;
+import view.AllTaskPanel;
+import view.MainPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,9 +14,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-
-import static main.Main.PRINTTASKFILE;
-import static main.Main.TASKFILE;
 
 /**
  * Listener class which runs when user saves added task, him implements ActionListener and one method
@@ -91,17 +90,26 @@ public class AddEventListener implements ActionListener {
             removedtask=task;
             Main.tasks.add(task);
             try {
-                TaskIO.writeBinary(Main.tasks, new File(TASKFILE));
-                TaskIO.writeText(Main.tasks, new File(PRINTTASKFILE));
+                TaskIO.writeBinary(Main.tasks, new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile()+"/tasks.tsk"));
                 Main.mon=false;
                 synchronized( Main.MONITOR  ) {
                     Main.MONITOR.notify();
                 }
-                LOGGER.info("New Task with name"+task.getTitle()+"was added");
+                LOGGER.info("New Task with name "+task.getTitle()+" was added");
             } catch (IOException e1) {
                 LOGGER.error(e1);
                 JOptionPane.showMessageDialog(null, "При создании новой задачи возникла непредвиденная ошибка");
             }
+            Main.frame.revalidate();
+            Main.frame.repaint();
+            JPanel newpanel=null;
+            if(panel.getBack().equals("Main")){
+                newpanel=new MainPanel(Main.frame);
+            }else if(panel.getBack().equals("All")){
+                newpanel=new AllTaskPanel();
+            }
+            Main.frame.setContentPane(newpanel);
+            Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());
         }
 
     }

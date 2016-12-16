@@ -1,17 +1,14 @@
 package util;
 
+import model.Task;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 
-import static main.Main.PRINTTASKFILE;
+import static main.Main.tasks;
 
 /**
  * Class: Printer
@@ -56,21 +53,13 @@ public class Printer implements Printable {
         g2.setFont(new Font("Arial", Font.BOLD, 18));
         int x =  (int) pf.getImageableX()+20;
         int y = (int) pf.getImageableY()+60;
-
-        try {
-            FileReader fr = new FileReader(new File(PRINTTASKFILE));
-            BufferedReader br = new BufferedReader(fr);
-            String s;
-            int i=1;
-            g2.drawString("Task manager", 220, 20);
-            g2.setFont(new Font("CourierThai", Font.ITALIC, 10));
-            while ((s = br.readLine()) != null) {
-                y += interline;
-                g2.drawString(i+"."+s, x, y);
-                i++;
-            }
-        } catch (IOException e) {
-            LOGGER.error("File to print does not exist!");
+        int i=1;
+        g2.drawString("Task manager", 220, 20);
+        g2.setFont(new Font("CourierThai", Font.ITALIC, 10));
+        for(Task task: tasks) {
+            y += interline;
+            g2.drawString(i+"."+task.toString(), x, y);
+            i++;
         }
         return Printable.PAGE_EXISTS;
     }
