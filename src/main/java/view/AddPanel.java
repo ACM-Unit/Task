@@ -57,7 +57,6 @@ public class AddPanel extends JPanel {
             int days=cal.get(Calendar.DAY_OF_YEAR)-1;
             int hours=cal.get(Calendar.HOUR_OF_DAY)-2;
             int minutes=cal.get(Calendar.MINUTE);
-            LOGGER.info(days+" "+hours+" "+minutes);
             interval=new IntervalPanel(days, hours, minutes);
         }else{
             interval=new IntervalPanel(0, 0, 0);
@@ -127,7 +126,7 @@ public class AddPanel extends JPanel {
         addButton.setLocation(170, 232);
         chekRepeat.addActionListener(new RepeatEventListener());
         addButton.addActionListener(new AddEventListener(task));
-        backButton.addActionListener(new RedirectEventListener("Add", back, null));
+        backButton.addActionListener(new RedirectEventListener("Add", back));
         this.add(chekRepeat);
         this.add(backButton);
         this.add(addButton);

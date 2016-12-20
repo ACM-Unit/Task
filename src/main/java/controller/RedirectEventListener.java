@@ -5,6 +5,7 @@ import model.Task;
 import org.apache.log4j.Logger;
 import view.AddPanel;
 import view.AllTaskPanel;
+import view.AllTaskPerDayPanel;
 import view.MainPanel;
 
 import javax.swing.*;
@@ -32,6 +33,10 @@ public class RedirectEventListener implements ActionListener {
         this.panel=panel;
         this.task=task;
     }
+    public RedirectEventListener(String backpanel, String panel){
+        this.backpanel=backpanel;
+        this.panel=panel;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         Main.frame.revalidate();
@@ -43,6 +48,8 @@ public class RedirectEventListener implements ActionListener {
             newpanel=new MainPanel(Main.frame);
         }else if(panel.equals("All")){
             newpanel=new AllTaskPanel();
+        }else if(panel.equals("AllDay")){
+            newpanel=new AllTaskPerDayPanel();
         }
         Main.frame.setContentPane(newpanel);
         Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());

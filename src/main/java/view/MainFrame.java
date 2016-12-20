@@ -17,7 +17,7 @@ private static final Logger LOGGER = Logger.getLogger(MainFrame.class);
      */
     public MainFrame(){
         super("Task manager");
-        this.setBounds(300,180,643,370);
+        this.setBounds(300,180,643,390);
         this.setResizable(false);
         ImageIcon imageIcon = new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("images/Logo.png"));
         this.setIconImage(imageIcon.getImage());

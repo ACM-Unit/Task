@@ -22,15 +22,16 @@ public class MainPanel extends JPanel {
     private JButton addbutton = new JButton();
     private JButton printbutton = new JButton();
     private JButton allbutton = new JButton();
-    final URL url = Thread.currentThread().getContextClassLoader().getResource("images/LogoHead.png");
-    final URL urlAdd = Thread.currentThread().getContextClassLoader().getResource("images/add.png");
-    final URL urlAll = Thread.currentThread().getContextClassLoader().getResource("images/list.png");
-    final URL urlPrint = Thread.currentThread().getContextClassLoader().getResource("images/printer.png");
+    private final URL url = Thread.currentThread().getContextClassLoader().getResource("images/LogoHead.png");
+    private final URL urlAdd = Thread.currentThread().getContextClassLoader().getResource("images/add.png");
+    private final URL urlAll = Thread.currentThread().getContextClassLoader().getResource("images/list.png");
+    private final URL urlPrint = Thread.currentThread().getContextClassLoader().getResource("images/printer.png");
     private ImageIcon image = new ImageIcon(url);
     private JLabel label = new JLabel("", image, JLabel.CENTER);
     private JPanel panel = new JPanel(new BorderLayout());
     private JPanel head=new JPanel();
     private JPanel panelIn = new JPanel();
+    private SortedMap calendar;
 
     /**
      * Constructor with one parameter
@@ -40,7 +41,7 @@ public class MainPanel extends JPanel {
         panel.add( label, BorderLayout.CENTER );
         panel.setSize(414, 70);
         panel.setLocation(10, 10);
-        this.setSize(643,370);
+        this.setSize(643,390);
         this.setLayout(null);
         this.add(headlabel);
         this.add(addbutton);
@@ -61,12 +62,11 @@ public class MainPanel extends JPanel {
         allbutton.setSize(30,30);
         allbutton.setLocation(this.getWidth()-75, 5);
         allbutton.setIcon(new ImageIcon(urlAll));
-        allbutton.addActionListener(new RedirectEventListener("Main","All", null));
+        allbutton.addActionListener(new RedirectEventListener("Main","All"));
         Date nowDate=new Date();
         Calendar calEnd = Calendar.getInstance();
         calEnd.add(Calendar.DATE, 1);
         Date endDate=calEnd.getTime();
-        SortedMap<Date, Set<Task>> calendar= null;
         try {
             calendar = Tasks.calendar(Main.tasks, nowDate, endDate);
         } catch (InstantiationException e) {
@@ -82,7 +82,7 @@ public class MainPanel extends JPanel {
         head.setLocation(5,110);
         head.setSize(this.getWidth()-15,212);
         panelIn.setLayout(null);
-        panelIn.setPreferredSize(new Dimension(208*calendar.size(),202));
+        panelIn.setPreferredSize(new Dimension(208*3,202));
         panelIn.setSize(this.getWidth()-15,210);
         JScrollPane scroll = new JScrollPane(panelIn);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
@@ -91,13 +91,19 @@ public class MainPanel extends JPanel {
         this.add(head);
         int x=10;
         if(calendar.size()>3){
-            panelIn.setSize(this.getWidth()-15,230);
-            head.setSize(this.getWidth()-15,230);
+            JButton morebutton = new JButton();
+            morebutton.setSize(300,30);
+            morebutton.setLocation(this.getWidth()-311, 325);
+            morebutton.setText("показать все задачи на ближайшие сутки");
+            morebutton.addActionListener(new RedirectEventListener("Main", "AllDay"));
+            this.add(morebutton);
         }
-        while(iter.hasNext()) {
+        int i=0;
+        while(i<3 && iter.hasNext()) {
             Map.Entry<Date, Set<Task>> cal = (Map.Entry<Date, Set<Task>>)iter.next();
             panelIn.add(new CalendarPanel(cal, x, 5));
             x += 205;
+            i++;
         }
 
     }
@@ -172,5 +178,13 @@ public class MainPanel extends JPanel {
 
     public void setPanelIn(JPanel panelIn) {
         this.panelIn = panelIn;
+    }
+
+    public SortedMap getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(SortedMap calendar) {
+        this.calendar = calendar;
     }
 }

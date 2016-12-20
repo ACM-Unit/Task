@@ -6,6 +6,7 @@ import model.TaskIO;
 import org.apache.log4j.Logger;
 import view.AddPanel;
 import view.AllTaskPanel;
+import view.AllTaskPerDayPanel;
 import view.MainPanel;
 
 import javax.swing.*;
@@ -98,7 +99,8 @@ public class AddEventListener implements ActionListener {
                 LOGGER.info("New Task with name "+task.getTitle()+" was added");
             } catch (IOException e1) {
                 LOGGER.error(e1);
-                JOptionPane.showMessageDialog(null, "При создании новой задачи возникла непредвиденная ошибка");
+                File file=new File(new File(System.getProperty("java.class.path")).getAbsoluteFile().getParentFile()+"/tasks.tsk");
+                JOptionPane.showMessageDialog(null, " При создании новой задачи возникла непредвиденная ошибка");
             }
             Main.frame.revalidate();
             Main.frame.repaint();
@@ -107,6 +109,8 @@ public class AddEventListener implements ActionListener {
                 newpanel=new MainPanel(Main.frame);
             }else if(panel.getBack().equals("All")){
                 newpanel=new AllTaskPanel();
+            }else if(panel.getBack().equals("AllDay")){
+                newpanel=new AllTaskPerDayPanel();
             }
             Main.frame.setContentPane(newpanel);
             Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());

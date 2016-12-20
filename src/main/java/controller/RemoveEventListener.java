@@ -5,6 +5,7 @@ import model.Task;
 import model.TaskIO;
 import org.apache.log4j.Logger;
 import view.AllTaskPanel;
+import view.AllTaskPerDayPanel;
 import view.MainPanel;
 
 import javax.swing.*;
@@ -43,6 +44,8 @@ public class RemoveEventListener implements ActionListener {
                 newpanel=new MainPanel(Main.frame);
             }else if(panel.equals("All")){
                 newpanel=new AllTaskPanel();
+            }else if(panel.equals("AllDay")){
+                newpanel=new AllTaskPerDayPanel();
             }
             Main.frame.setContentPane(newpanel);
             Main.frame.setBounds(300,180, newpanel.getWidth(), newpanel.getHeight());
